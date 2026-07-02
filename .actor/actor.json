@@ -1,0 +1,37 @@
+{
+    "actorSpecification": 1,
+    "name": "canada-dentist-directory-scraper",
+    "title": "Canada Dentist and Clinic Directory Scraper",
+    "description": "Extract verified dental clinics, orthodontists, and dental professionals across Canada. High-quality B2B healthcare leads.",
+    "version": "1.0",
+    "input": "./input_schema.json",
+    "dockerfile": "./Dockerfile",
+    "minMemoryMbytes": 1024,
+    "maxMemoryMbytes": 4096,
+    "pricingModel": "PAY_PER_EVENT",
+    "pricingEvents": [
+        {
+            "eventName": "apify-actor-start",
+            "pricePerEvent": 0.25,
+            "description": "Base fee for starting the crawler (Playwright overhead)"
+        },
+        {
+            "eventName": "lead-extracted",
+            "pricePerEvent": 0.004,
+            "description": "Charged per Canadian dentist lead successfully extracted ($4.00 per 1k leads)"
+        }
+    ],
+    "isPublic": true,
+    "seoTitle": "Canada Dentist Directory Scraper | YellowPages CA Extractor",
+    "seoDescription": "Scrape top-rated dental clinics and orthodontists in Canada. Extract verified phone numbers, addresses, and ratings for B2B healthcare marketing.",
+    "categories": [
+        "LEAD_GENERATION",
+        "BUSINESS",
+        "HEALTH"
+    ],
+    "defaultRunOptions": {
+        "build": "latest",
+        "timeoutSecs": 3600,
+        "memoryMbytes": 1024
+    }
+}
