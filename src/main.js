@@ -7,8 +7,7 @@ await Actor.init();
 try {
     const input = await Actor.getInput();
     const { 
-        keyword = 'dentist', 
-        location = 'Toronto, ON', 
+        startUrls = [],
         maxLeads = 100,
         proxyConfiguration 
     } = input || {};
@@ -19,7 +18,7 @@ try {
         apifyProxyCountry: 'CA'
     });
 
-    log.info(`Searching YellowPages Canada for "${keyword}" in "${location}"`);
+    log.info(`Searching YellowPages Canada...`);
     await Actor.charge({ eventName: 'apify-actor-start', count: 1 });
 
     let extractedCount = 0;
@@ -68,7 +67,7 @@ try {
 
                 // Specialty
                 const categoriesElement = await item.$('.listing__category, .categories');
-                const specialty = categoriesElement ? (await categoriesElement.innerText()).trim() : keyword;
+                const specialty = categoriesElement ? (await categoriesElement.innerText()).trim() : '';
                 
                 // Website
                 const websiteElement = await item.$('.listing__website a, a.website');
@@ -117,13 +116,14 @@ try {
         }
     });
 
-    // Formatting for YP CA: spaces become +
-    const formatLocation = location.replace(/\s+/g, '+');
-    const startUrl = `https://www.yellowpages.ca/search/si/1/${encodeURIComponent(keyword)}/${formatLocation}`;
-    
-    await crawler.addRequests([{
-        url: startUrl
-    }]);
+    if (startUrls && startUrls.length > 0) {
+        for (const req of startUrls) {
+            await crawler.addRequests([{ url: typeof req === 'string' ? req : req.url }]);
+        }
+    } else {
+        log.warning('No startUrls provided. Using default.');
+        await crawler.addRequests([{ url: 'https://www.yellowpages.ca/search/si/1/dentist/Toronto+ON' }]);
+    }
 
     armKillSwitch(crawler);
     await crawler.run();

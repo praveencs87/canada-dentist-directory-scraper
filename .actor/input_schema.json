@@ -3,19 +3,14 @@
     "type": "object",
     "schemaVersion": 1,
     "properties": {
-        "keyword": {
-            "title": "Keyword",
-            "type": "string",
-            "description": "The specific dental niche (e.g., 'dentist', 'orthodontist').",
-            "editor": "textfield",
-            "prefill": "dentist"
-        },
-        "location": {
-            "title": "Location (City, Province)",
-            "type": "string",
-            "description": "The Canadian location (e.g., 'Toronto, ON', 'Vancouver, BC').",
-            "editor": "textfield",
-            "prefill": "Toronto, ON"
+        "startUrls": {
+            "title": "Start URLs",
+            "type": "array",
+            "description": "List of search URLs to scrape.",
+            "editor": "requestListSources",
+            "prefill": [
+                { "url": "https://www.yellowpages.ca/search/si/1/dentist/Toronto+ON" }
+            ]
         },
         "maxLeads": {
             "title": "Maximum Leads",
@@ -32,5 +27,5 @@
             "editor": "proxy"
         }
     },
-    "required": ["keyword", "location"]
+    "required": ["startUrls"]
 }
